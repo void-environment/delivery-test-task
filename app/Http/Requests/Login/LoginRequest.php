@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Login;
 
 use App\Http\Requests\BaseFormRequest;
+use App\Rules\ValidCredentialsRule;
 
 class LoginRequest extends BaseFormRequest
 {
@@ -16,7 +17,7 @@ class LoginRequest extends BaseFormRequest
     {
         return [
             'email' => 'required|email',
-            'password' => 'required|min:4',
+            'password' => ['required', 'min:4', new ValidCredentialsRule()],
         ];
     }
 

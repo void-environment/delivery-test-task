@@ -34,12 +34,6 @@ class AuthController extends Controller
     {
         $user = User::firstWhere('email', $request->email);
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['Неверные учетные данные.'],
-            ]);
-        }
-
         return new LoginResponse(
             $user->createToken('api-token')->plainTextToken
         );

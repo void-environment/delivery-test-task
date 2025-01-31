@@ -1,0 +1,331 @@
+openapi: 3.0.0
+info:
+  title: 'Delivery App'
+  version: '1.0'
+
+paths:
+  /couriers:
+    post:
+      description: 'Create couriers'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CouriersPostRequest'
+      responses:
+        '201':
+          description: 'Created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CouriersIds'
+
+  /couriers/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    get:
+      description: 'Get courier info'
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourierGetResponse'
+        '404':
+          description: 'Not found'
+
+    patch:
+      description: 'Update courier by id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourierUpdateRequest'
+      responses:
+        '200':
+          description: 'Created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourierItemWithId'
+        '400':
+          description: 'Bad request'
+        '404':
+          description: 'Not found'
+
+  /orders:
+    post:
+      description: 'Import orders'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrdersPostRequest'
+      responses:
+        '201':
+          description: 'Created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrdersIds'
+
+  /orders/assign:
+    post:
+      description: 'Assign orders to a courier by id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrdersAssignPostRequest'
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/OrderItemWithId'
+                  - $ref: '#/components/schemas/AssignTime'
+
+  /orders/complete:
+    post:
+      description: 'Marks orders as completed'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrdersCompletePostRequest'
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrdersCompletePostResponse'
+
+components:
+  schemas:
+    CouriersPostRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CourierItem'
+      required:
+        - data
+
+    CourierItem:
+      type: object
+      additionalProperties: false
+      properties:
+        courier_type:
+          type: string
+          enum:
+            - foot
+            - bike
+            - car
+        regions:
+          type: array
+          items:
+            type: integer
+        working_hours:
+          type: array
+          items:
+            type: string
+      required:
+        - courier_type
+        - regions
+        - working_hours
+
+    CourierItemWithId:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        courier_type:
+          type: string
+          enum:
+            - foot
+            - bike
+            - car
+        regions:
+          type: array
+          items:
+            type: integer
+        working_hours:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - courier_type
+        - regions
+        - working_hours
+
+    CouriersIds:
+      type: object
+      additionalProperties: false
+      properties:
+        couriers:
+          type: array
+          items:
+            $ref: '#/components/schemas/CourierItemWithId'
+      required:
+        - couriers
+
+    CourierGetResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        courier_type:
+          type: string
+          enum:
+            - foot
+            - bike
+            - car
+        regions:
+          type: array
+          items:
+            type: integer
+        working_hours:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - courier_type
+        - regions
+        - working_hours
+
+    CourierUpdateRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        courier_type:
+          type: string
+          enum:
+            - foot
+            - bike
+            - car
+        regions:
+          type: array
+          items:
+            type: integer
+        working_hours:
+          type: array
+          items:
+            type: string
+
+    OrdersPostRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+      required:
+        - data
+
+    OrderItem:
+      type: object
+      additionalProperties: false
+      properties:
+        weight:
+          type: number
+        region:
+          type: integer
+        delivery_hours:
+          type: array
+          items:
+            type: string
+      required:
+        - weight
+        - region
+        - delivery_hours
+
+    OrderItemWithId:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+        weight:
+          type: number
+        region:
+          type: integer
+        delivery_hours:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - weight
+        - region
+        - delivery_hours
+
+    OrdersIds:
+      type: object
+      additionalProperties: false
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItemWithId'
+      required:
+        - orders
+
+    AssignTime:
+      type: object
+      additionalProperties: false
+      properties:
+        assign_time:
+          type: string
+          example: '2021-01-10T09:32:14.42Z'
+
+    OrdersAssignPostRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        courier_id:
+          type: integer
+        order_id:
+          type: integer
+      required:
+        - courier_id
+        - order_id
+
+    OrdersCompletePostRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        courier_id:
+          type: integer
+        order_id:
+          type: integer
+        complete_time:
+          type: string
+          example: '2021-01-10T10:33:01.42Z'
+      required:
+        - courier_id
+        - order_id
+        - complete_time
+
+    OrdersCompletePostResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        order_id:
+          type: integer
+      required:
+        - order_id

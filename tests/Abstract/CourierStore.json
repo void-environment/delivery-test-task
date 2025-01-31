@@ -1,0 +1,19 @@
+{
+    "data": [
+      {
+        "courier_type": "foot",
+        "regions": ["MGN", 2, 3],
+        "working_hours": ["09:00-12:00", "14:00-18:00"]
+      },
+      {
+        "courier_type": "bike",
+        "regions": [2, 4, 5],
+        "working_hours": ["08:00-11:00", "13:00-17:00"]
+      },
+      {
+        "courier_type": "car",
+        "regions": [3, 6, 9],
+        "working_hours": ["07:00-10:00", "16:00-20:00"]
+      }
+    ]
+}

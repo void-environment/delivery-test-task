@@ -20,8 +20,17 @@ use App\Http\Responses\NoContentResponse;
 
 use Illuminate\Support\Carbon;
 
+/**
+ * Контроллер управления заказами.
+ */
 class OrderController extends Controller
 {
+    /**
+     * Создание новых заказов.
+     *
+     * @param OrderStoreRequest $request запрос с данными заказов.
+     * @return OrderStoreResponse ответ с данными созданных заказов.
+     */
     public function store(OrderStoreRequest $request): OrderStoreResponse
     {
         $orders = collect($request->input('data'))
@@ -31,6 +40,12 @@ class OrderController extends Controller
         return new OrderStoreResponse($orders);
     }
 
+    /**
+     * Назначение заказа курьеру.
+     *
+     * @param OrderAssignRequest $request запрос с ID курьера и заказа.
+     * @return NotFoundResponse|OrderAssignResponse ответ с данными заказа или ошибка 404.
+     */
     public function assign(OrderAssignRequest $request): NotFoundResponse | OrderAssignResponse
     {
         $courierId = $request->input('courier_id');
@@ -53,6 +68,12 @@ class OrderController extends Controller
         return new OrderAssignResponse($order);
     }
 
+    /**
+     * Завершение заказа.
+     *
+     * @param OrderCompleteRequest $request запрос с ID курьера и заказа.
+     * @return NotFoundResponse|NoContentResponse ответ 204 при успешном завершении или ошибка 404.
+     */
     public function complete(OrderCompleteRequest $request): NotFoundResponse | NoContentResponse
     {
         $courierId = $request->input('courier_id');

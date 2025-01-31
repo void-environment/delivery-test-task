@@ -4,7 +4,7 @@
 
 ### 1. Клонирование репозитория
 ```bash
-git clone https://github.com/void-environment/delivety-test-task.git
+git clone https://github.com/void-environment/delivery-test-task.git
 cd delivery-test-task
 ```
 

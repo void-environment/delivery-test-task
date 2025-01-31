@@ -9,7 +9,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\Login\LoginRequest;
 
-use Illuminate\Http\JsonResponse;
 use App\Http\Responses\Login\LoginResponse;
 use App\Http\Responses\NoContentResponse;
 

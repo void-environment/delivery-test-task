@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Courier;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\Courier\CourierStoreRequest;
 use App\Http\Requests\Courier\CourierUpdateRequest;

@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Courier;
-use Illuminate\Http\JsonResponse;
 
 use App\Http\Requests\Order\OrderStoreRequest;
 use App\Http\Requests\Order\OrderAssignRequest;
